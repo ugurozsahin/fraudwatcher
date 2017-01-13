@@ -94,7 +94,8 @@ public class TransactionContext {
 			
 		 Set<Entry<String, String>> set = fieldValues.entrySet();
 		 for (Entry<String, String> field : set) {
-			 sqlClause = sqlClause.replaceAll(field.getKey(), field.getValue());
+			 String pattern = String.format("#%1$s#", field.getKey().toString());
+			 sqlClause = sqlClause.replaceAll(pattern.toString(), field.getValue().toString());
 		 }
 		 
 		return sqlClause;

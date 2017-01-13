@@ -44,11 +44,15 @@ public class ApplicationRuleLoader implements ApplicationListener<ContextRefresh
     	
     	CreateValidReceiverPhoneRule(firstApplicationId, "^(\\d+)*$", -4D);
     	
+    	CreateRegexRule(firstApplicationId, "InvalidReceiverPhone", "receiverPhone", "((?!\\d).)", RuleType.RegexMatch, 3D);
+    	CreateRegexRule(secondApplicationId, "InvalidReceiverPhone", "receiverPhone", "((?!\\d).)", RuleType.RegexMatch, 3D);
+    	CreateRegexRule(thirdApplicationId, "InvalidReceiverPhone", "receiverPhone", "((?!\\d).)", RuleType.RegexMatch, 3D);
+    	
     	CreateAmountBetweenRule(firstApplicationId, "100|500", 5D);
     	CreateAmountBetweenRule(secondApplicationId, "200|300", 3D);
     	
-    	CreateSqlClauseRule(firstApplicationId, "Select Count(*) > 2 From Transaction Where OrderId:{{orderId}}", 5D);
-    	CreateSqlClauseRule(secondApplicationId, "Select Count(*) > 5 From Transaction Where OrderId:{{orderId}}", 10.5D);
+    	CreateSqlClauseRule(firstApplicationId, "Select (Count(*) + 1) > 1 From \"transaction\" Where \"order_id\"='#orderId#'", 5D);
+    	CreateSqlClauseRule(secondApplicationId, "Select (Count(*) + 1) > 2 From \"transaction\" Where \"order_id\"='#orderId#'", 10.5D);
     }
     
     public void CreateRegexRule(String applicationId, String ruleName, String fieldName, String value, RuleType ruleType, double point)
