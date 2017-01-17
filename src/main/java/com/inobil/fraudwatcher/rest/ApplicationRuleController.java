@@ -2,21 +2,19 @@ package com.inobil.fraudwatcher.rest;
 
 import java.util.List;
 
-import javax.inject.Named;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.inobil.fraudwatcher.entity.ApplicationRule;
 import com.inobil.fraudwatcher.services.ApplicationRuleService;
 
-@Named
-@Path("/applicationrule")
-public class ApplicationRuleRest {
+@RestController
+@RequestMapping("api/v1/applicationrule")
+public class ApplicationRuleController {
 	private ApplicationRuleService applicationRuleService;
 	
 	/**
@@ -27,16 +25,13 @@ public class ApplicationRuleRest {
 		this.applicationRuleService = applicationRuleService;
 	}
 
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
+	@RequestMapping(value = "", method = RequestMethod.GET)
 	public List<ApplicationRule> getApplicationRules() {
 		return applicationRuleService.findAll();
 	}
 
-	@GET
-	@Path("getbyapplicationid")
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<ApplicationRule> getApplicationRulesByApplicationId(@QueryParam("id") String applicationId) {
+	@RequestMapping(value = "/getbyapplicationid", method = RequestMethod.GET)	
+	public List<ApplicationRule> getApplicationRulesByApplicationId(@RequestParam("id") String applicationId) {
 		return applicationRuleService.findByApplicationId(applicationId);
 	}
 }

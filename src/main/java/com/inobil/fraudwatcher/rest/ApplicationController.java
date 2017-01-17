@@ -2,21 +2,18 @@ package com.inobil.fraudwatcher.rest;
 
 import java.util.List;
 
-import javax.inject.Named;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.inobil.fraudwatcher.entity.Application;
 import com.inobil.fraudwatcher.services.ApplicationService;
 
-@Named
-@Path("/application")
-public class ApplicationRest {
+@RestController
+@RequestMapping("api/v1/application")
+public class ApplicationController {
 	private ApplicationService applicationService;
 	
 	/**
@@ -27,16 +24,13 @@ public class ApplicationRest {
 		this.applicationService = applicationService;
 	}
 
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
+	@RequestMapping(value = "", method = RequestMethod.GET)
 	public List<Application> getApplications() {
 		return applicationService.findAll();
 	}
 
-	@GET
-	@Path("getbyapplicationid")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Application getApplication(@QueryParam("id") String applicationId) {
+	@RequestMapping(value = "/getbyapplicationid", method = RequestMethod.GET)	
+	public Application getApplication(@RequestParam("id") String applicationId) {
 		return applicationService.findByApplicationId(applicationId);
 	}
 }
